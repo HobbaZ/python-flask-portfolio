@@ -1,30 +1,37 @@
-<div class="row" id="contact">
-    <div class="p-2 text-light col-xs-12 col-sm-6 text-center">
-        <h1>{% block title %} Contact {% endblock %}</h1>
-        <p>Contact me on socials or by email to get in touch</p>
+<section id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="p-2 text-light col-xs-12 col-sm-6">
+                <h1>{% block title %} Contact {% endblock %}</h1>
+            </div>
+
+            <div class="p-2 col-xs-12 col-sm-6">
+                <p class="text-center">Contact me on socials or by email to get in touch</p>
+                <form>
+                    <div class="mb-3">
+                        <label for="nameInput" class="form-label">Name</label><br>
+                        <input type="text" class="form-control d-inline-flex focus-ring" id="nameInput" required
+                            placeholder="Your Name">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="emailInput" class="form-label">Email Address</label><br>
+                        <input type="email" class="form-control d-inline-flex focus-ring" id="emailInput" required
+                            placeholder="youremail@email.com">
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="messageInput" class="form-label">Message</label><br>
+                        <textarea class="form-control d-inline-flex focus-ring" id="messageInput" required
+                            rows="6"></textarea>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-danger">Send Email</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <div class="p-2 col-xs-12 col-sm-6">
-
-        <form>
-            <div class="mb-3">
-                <label for="nameInput" class="form-label">Name</label><br>
-                <input type="text" class="form-control d-inline-flex focus-ring w-75" id="nameInput" required
-                    placeholder="Your Name">
-            </div>
-
-            <div class="mb-3">
-                <label for="emailInput" class="form-label">Email Address</label><br>
-                <input type="email" class="form-control d-inline-flex focus-ring w-75" id="emailInput" required
-                    placeholder="youremail@email.com">
-
-            </div>
-
-            <div class="mb-3">
-                <label for="messageInput" class="form-label">Message</label><br>
-                <textarea class="form-control d-inline-flex focus-ring w-75" id="messageInput" required
-                    rows="6"></textarea>
-            </div>
-        </form>
-
-    </div>
+</section>

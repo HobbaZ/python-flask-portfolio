@@ -4,15 +4,49 @@ body {
   height: 100%;
 }
 
+/* services section css */
+.servicesText.card {
+  background-color: transparent;
+  height: 280px;
+  cursor: pointer;
+  border: 1px solid white;
+  color: white;
+}
+
+.servicesIcon {
+  font-size: 36px;
+  text-align: center;
+  width: 100%;
+}
+
+.card-title {
+  text-align: center;
+}
+
+.card:hover .servicesIcon,
+.card:hover .card-title {
+  color: #008000;
+}
+
+.card:hover .card-title {
+  text-decoration: underline;
+}
+
+.servicesText:hover {
+  border: 1px solid #008000;
+}
+
 #homeTitle {
-  font-size: 70px;
+  font-size: 50px;
   color: white;
 }
 
 #homeTitle,
 #about,
 #projects,
-#contact {
+#contact,
+#experience,
+#services {
   padding-bottom: 100px;
 }
 
@@ -24,18 +58,19 @@ h5,
 h6,
 footer,
 label,
-p {
+p,
+li,
+hr {
   color: white;
 }
 
-h1,
 h6 {
   text-align: center;
 }
 
 footer {
   display: flex;
-  width: 100vw;
+  width: 100%;
   flex-wrap: wrap;
 }
 
