@@ -11,3 +11,7 @@ def index():
 @app.route('/games')
 def games():
     return render_template('games.html')
+
+@app.route('/gamesBase')
+def gamesBase():
+    return render_template('gamesBase.html')
