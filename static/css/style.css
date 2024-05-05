@@ -4,21 +4,6 @@ body {
   height: 100%;
 }
 
-/* services section css */
-.servicesText.card {
-  background-color: transparent;
-  height: 280px;
-  cursor: pointer;
-  border: 1px solid white;
-  color: white;
-}
-
-.servicesIcon {
-  font-size: 36px;
-  text-align: center;
-  width: 100%;
-}
-
 .card-title {
   text-align: center;
 }
@@ -32,8 +17,45 @@ body {
   text-decoration: underline;
 }
 
-.servicesText:hover {
-  border: 1px solid #008000;
+#siteFooter {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+#gameFooter {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  position: absolute;
+  bottom: 0%;
+  left: 0;
+  margin: auto;
+}
+
+#gameTitleScreen,
+#showGameOver {
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-color: black;
+  color: white;
+}
+
+#gameTitleScreen {
+  z-index: 2;
+}
+
+.form-control:focus {
+  border: 2px solid white;
+}
+
+#gameCanvas {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(#e4e0bad2, #f7daaab2);
 }
 
 #homeTitle {
@@ -68,52 +90,33 @@ h6 {
   text-align: center;
 }
 
-footer {
-  display: flex;
-  width: 100%;
-  flex-wrap: wrap;
-}
-
-.form-control:focus {
-  border: 2px solid white;
-}
-
 .icons {
   font-size: 30px;
   padding: 5px;
 }
 
-#gamesScreen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.servicesText.card {
+  background-color: transparent;
+  height: 280px;
+  cursor: pointer;
+  border: 1px solid white;
+  color: white;
 }
 
-#outer {
-  position: relative;
-  height: 100%; /* Set a fixed height for the container */
+.servicesIcon {
+  font-size: 36px;
   text-align: center;
   width: 100%;
 }
 
-.absoluteFooter {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
-  width: 100%;
-  margin-top: 100px;
+.servicesText:hover {
+  border: 1px solid #008000;
 }
 
-.inner {
-  border: 2px white solid;
-  border-radius: 10px;
+#ui {
+  margin: 0;
   position: absolute;
-  top: 0;
-  width: 50%;
-  height: 50%;
-  left: 25%;
-  transform: translateY(50%);
+  top: 60px;
+  left: 30px;
+  color: white;
 }
