@@ -27,27 +27,37 @@
             <h1>Points: <span id="points">0</span></h1>
         </div>
 
-        <div id="gameTitleScreen">
+        <div id="startScreen">
+            <div class="screenContainer"></div>
             <h1 id="gameTitle">Test</h1>
-            <button id="playButton">Play</button>
-            <button id="controlsButton">Controls</button>
+            <div>Use the up, down, left and right arrow keys to move</div>
+            <button id="playBtn">Play</button>
         </div>
+    </div>
 
-        <div id="gameOverScreen">
-            <h1 id="gameOver"></h1>
-            <button id="playAgain">Play Again?</button>
-            <a href="../templates/games.html" class="btn btn-info" role="button">Back to Games</a>
+    <div id="gameOverScreen">
+        <div class="screenContainer"></div>
+        <div id="gameOverMessage"></div>
+        <button id="playAgainBtn">Play Again?</button>
+        <a href="../templates/games.html" class="btn btn-info" role="button">Back to Games</a>
+    </div>
+    </div>
+
+    <!--<div id="gameControls">
+            <h1>Controls</h1>
+            <div id="gameControlsMap"></div>
+            <button id="backButton">Back</button>
+        </div>-->
+
+    <footer class="footer row text-center" id="gameFooter">
+        <div class="p-2 col-12">Zac Hobba, 2024
+            <span class="icons ps-5"></span>
+
+            <span class="icons"></span>
+
+            <span class="icons"></span>
         </div>
-
-        <footer class="footer row text-center" id="gameFooter">
-            <div class="p-2 col-12">Zac Hobba, 2024
-                <span class="icons ps-5"></span>
-
-                <span class="icons"></span>
-
-                <span class="icons"></span>
-            </div>
-        </footer>
+    </footer>
 
     </div>
 
