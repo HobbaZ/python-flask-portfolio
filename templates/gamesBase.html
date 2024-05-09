@@ -27,20 +27,21 @@
             <h1>Points: <span id="points">0</span></h1>
         </div>
 
-        <div id="startScreen">
-            <div class="screenContainer"></div>
-            <h1 id="gameTitle">Test</h1>
-            <div>Use the up, down, left and right arrow keys to move</div>
-            <button id="playBtn">Play</button>
-        </div>
-    </div>
+        <div id="menuScreen" class="d-flex justify-content-center align-items-center">
+            <div id="startScreenContainer" class="col-xs-12 col-sm-6">
+                <h1 id="gameTitle">Endless Runner</h1>
+                <div>Use the left and right arrow keys to move</div>
+                <button type="button" class="btnPrimary col-xs-12 col-sm-6" id="playBtn">Play</button>
+                <a href="../templates/games.html" class="btnPrimary col-xs-12 col-sm-6" role="button">Back to Games</a>
+            </div>
 
-    <div id="gameOverScreen">
-        <div class="screenContainer"></div>
-        <div id="gameOverMessage"></div>
-        <button id="playAgainBtn">Play Again?</button>
-        <a href="../templates/games.html" class="btn btn-info" role="button">Back to Games</a>
-    </div>
+            <div id="gameOverScreenContainer" class="col-xs-12 col-sm-6">
+                <div id="gameOverMessage"></div>
+                <button type="button" class="btnPrimary col-xs-12 col-sm-6" id="playAgainBtn">Play Again</button>
+                <button type="button" class="mainMenuBtn btnPrimary col-xs-12 col-sm-6">Back to Main Menu</button>
+                <a href="../templates/games.html" class="btnPrimary col-xs-12 col-sm-6" role="button">Back to Games</a>
+            </div>
+        </div>
     </div>
 
     <!--<div id="gameControls">

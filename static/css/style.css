@@ -33,31 +33,64 @@ body {
   margin: auto;
 }
 
-#startScreen,
-#gameOverScreen,
-#gameStart,
-#gameControls {
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  background-color: black;
-  color: white;
+#menuScreen {
+  height: 100vh;
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  background-color: transparent;
+  opacity: 1;
+  color: white;
+  text-align: center;
 }
 
-#startScreen {
+#startScreenContainer,
+#gameOverScreenContainer {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 10px;
+  border: rgba(255, 255, 255, 0.4) 1px solid;
+  padding: 20px;
+}
+
+.btnPrimary {
+  background-color: transparent;
+  padding: 10px;
+  display: block;
+  color: white;
+  border: white 1px solid;
+  border-radius: 5px;
+  width: 50%;
+  margin: auto;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+.btnPrimary:hover {
+  color: orangered;
+  border: orangered 1px solid;
+}
+
+.btn-primary:focus {
+  border: black 1px solid;
+}
+
+/*#startScreen {
   z-index: 2;
-}
+}*/
 
-#gameScreen {
+/*#startScreenContainer {
   z-index: 3;
-}
+}*/
 
-#gameOverScreen {
+/*#gameOverScreen {
   z-index: 4;
-}
+}*/
+
+/*#gameOverScreenContainer {
+  z-index: 5;
+}*/
 
 .form-control:focus {
   border: 2px solid white;
@@ -68,7 +101,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: linear-gradient(#e4e0bad2, #f7daaab2);
+  background: linear-gradient(rgb(5, 7, 27), black);
 }
 
 #homeTitle {
