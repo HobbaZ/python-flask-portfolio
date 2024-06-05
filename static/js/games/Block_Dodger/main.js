@@ -1,47 +1,46 @@
 // main.js
 import * as THREE from "https://cdn.skypack.dev/three@0.133.1";
+import * as menuButtons from "../../baseGameComponents/menuButtons.js";
+import { windowResize } from "../../baseGameComponents/windowResize.js";
+import {
+  initUI,
+  showStartScreen,
+  showGameOverScreen,
+} from "../../baseGameComponents/gameUI.js";
+import { resetGameState } from "../../baseGameComponents/resetGame.js";
+import { endGame, startGame } from "../../baseGameComponents/gameLogic.js";
+
+//import { startGame, endGame } from "../../baseGameComponents/gameLogic.js";
+
 //import { OrbitControls } from "https://cdn.skypack.dev/three@0.133.1/examples/jsm/controls/OrbitControls";
 
 document.body.style.overflow = "hidden";
-const pointsUI = document.querySelector("#ui");
-const score = document.querySelector("#points");
-const menuScreen = document.querySelector("#menuScreen");
-const startScreenContainer = menuScreen.querySelector("#startScreenContainer");
-const playBtn = startScreenContainer.querySelector("#playBtn");
-const gameOverScreenContainer = menuScreen.querySelector(
-  "#gameOverScreenContainer"
-);
-const gameOverMessage =
-  gameOverScreenContainer.querySelector("#gameOverMessage");
-const playAgainBtn = gameOverScreenContainer.querySelector("#playAgainBtn");
-const mainMenuBtn = gameOverScreenContainer.querySelector(".mainMenuBtn");
-const clock = new THREE.Clock();
+document.getElementById("gameTitle").innerText = "Block Dodger";
 
+const clock = new THREE.Clock();
 let points = 0;
-let gameOver = true;
-let gameStart = true;
-let gameTitleName = "Test Game";
 let enemies = [];
 let powerups = [];
 let speed = 0.05;
 let totalObjects = 7;
-
+const pointsUI = document.querySelector("#ui");
+const score = document.querySelector("#points");
 let camera, scene, renderer, player, playerBox;
 
-// Generate a random whole number
-function randomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+// Initialize UI elements and base scene
+initUI();
+//initScene();
 
-//initial start menu
+// Initial game state
+let gameStart = true;
+let gameOver = false;
+
+//Show start menu first
 if (gameStart) {
-  menuScreen.style.display = "block";
-  startScreenContainer.style = "display:block; z-index:2;";
-  gameOverScreenContainer.style = "display:none; z-index:1;";
-  pointsUI.style.display = "none";
+  showStartScreen();
 }
 
-function init() {
+export const initScene = () => {
   console.log("initialising scene");
   scene = new THREE.Scene();
 
@@ -76,17 +75,19 @@ function init() {
     antialias: true,
     canvas: document.getElementById("gameCanvas"),
   });
-  //Set renderer size to full screen
-  renderer.setSize(window.innerWidth, window.innerHeight);
 
-  // Auto resize window
-  window.addEventListener("resize", onWindowResize, false);
-  function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  //Function to resize window automatically
+  windowResize(renderer, camera, scene);
+
+  //render initial scene
+  render();
+
   return;
+};
+
+// Generate a random whole number
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 // create player
@@ -176,8 +177,8 @@ function detectCollisions() {
     const enemyBox = new THREE.Box3().setFromObject(enemies[i]);
     // An object was hit
     if (enemyBox.intersectsBox(playerBox)) {
-      gameOver = true;
-      console.log("game over");
+      endGame(gameOver, enemies, player, powerups, camera, scene);
+      console.log("Object hit, game over");
       return;
     }
   }
@@ -201,7 +202,6 @@ function detectCollisions() {
 function moveObstacles(arr, power, maxX, minX, maxZ, minZ, deltaTime) {
   arr.forEach((el) => {
     el.position.z += deltaTime * power;
-    console.log("enemy speed " + power);
     if (el.position.z > camera.position.z) {
       el.position.x = randomNumber(minX, maxX);
       el.position.z = randomNumber(minZ, maxZ);
@@ -210,8 +210,6 @@ function moveObstacles(arr, power, maxX, minX, maxZ, minZ, deltaTime) {
 }
 
 function updatePlayerPos(deltaTime) {
-  const playerWidth = 1;
-
   window.addEventListener("keydown", (e) => {
     if (e.key === "d" || e.key === "ArrowRight") {
       if (player.position.x < 5) {
@@ -231,67 +229,34 @@ function updatePlayerPos(deltaTime) {
   });
 }
 
-function animate() {
-  if (gameOver) {
-    menuScreen.style.display = "block";
-    gameOverScreenContainer.style = "display:block; z-index:1;";
-    pointsUI.style.display = "none";
-    gameOverMessage.innerHTML =
-      "<div><h1>GAME OVER</h1><br/><h3>You scored " +
-      points.toString() +
-      `${points === 1 ? " point" : " points"}</h3></div>`;
-    enemies.forEach((el) => {
-      scene.remove(el);
-    });
+if (gameOver) {
+  enemies.forEach((el) => {
+    scene.remove(el);
+  });
 
-    powerups.forEach((el) => {
-      scene.remove(el);
-    });
+  powerups.forEach((el) => {
+    scene.remove(el);
+  });
 
-    if (player.position.z > camera.position.z) {
-      scene.remove(player);
-    }
-    console.log("game ended");
-    return;
-  } else {
-    const deltaTime = clock.getDelta();
-    updatePlayerPos(deltaTime);
-    pointsUI.style.display = "block";
-    menuScreen.style.display = "none";
-    gameOverScreenContainer.style = "display:none; z-index:1;";
-    startScreenContainer.style.display = "none";
-    moveObstacles(powerups, 2, -8, 8, -30, -25, deltaTime);
-    moveObstacles(enemies, 4, -8, 8, -30, -25, deltaTime);
-
-    detectCollisions();
-    renderer.render(scene, camera);
-    requestAnimationFrame(animate);
+  if (player.position.z > camera.position.z) {
+    scene.remove(player);
   }
 }
 
-// Add an event listener for the play button
-playAgainBtn.addEventListener("click", () => {
-  resetGameState();
-});
+export const animate = () => {
+  const deltaTime = clock.getDelta();
+  updatePlayerPos(deltaTime);
+  moveObstacles(powerups, 2, -8, 8, -30, -25, deltaTime);
+  moveObstacles(enemies, 4, -8, 8, -30, -25, deltaTime);
+  detectCollisions();
+  requestAnimationFrame(animate);
+  render();
+};
 
-// Add an event listener for the play button
-mainMenuBtn.addEventListener("click", () => {
-  menuScreen.style.display = "block";
-  startScreenContainer.style = "display:block; z-index:2;";
-  gameOverScreenContainer.style = "display:none; z-index:1;";
-});
-
-playBtn.addEventListener("click", () => {
-  resetGameState();
-});
-
-// Function to reset game state
-function resetGameState() {
-  points = 0;
-  gameStart = false;
-  gameOver = false;
-  enemies = [];
-  powerups = [];
-  init();
-  animate();
+function render() {
+  renderer.render(scene, camera);
 }
+
+menuButtons.handlePlayButton(resetGameState, startGame, gameOver);
+menuButtons.handlePlayAgainButton(resetGameState, startGame, gameOver);
+menuButtons.handleMainMenuButton(showStartScreen);

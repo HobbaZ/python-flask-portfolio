@@ -1,9 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="p-2 text-light col-xs-12 col-sm-6">
-        <h1>{% block title %} Games {% endblock %}</h1>
-        <a href="{{ url_for('gamesBase')}}" class="btn btn-info" role="button">Test Game</a>
+
+<div class="p-2 text-light col-xs-12 col-sm-6 container-fluid d-flex">
+    <h1>{% block title %} Games {% endblock %}</h1>
+    <div class="card m-2 p-2">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{% block gameTitle %} Block Dodger {% endblock %}</h5>
+            <p class="card-text">Dodge the blocks to get the highest score</p>
+            <a href="{{ url_for('gamesBase')}}" class="btn btn-info w-100" role="button">Play</a>
+        </div>
     </div>
-    {% endblock %}
+
+    <div class="card m-2 p-2">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">Car Drive</h5>
+            <p class="card-text">Drive a car around a landscape</p>
+            <a href="{{ url_for('gamesBase')}}" class="btn btn-info w-100" role="button">Play</a>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
