@@ -46,7 +46,8 @@ body {
 }
 
 #startScreenContainer,
-#gameOverScreenContainer {
+#gameOverScreenContainer,
+#pauseScreenContainer {
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
   border-radius: 10px;
@@ -75,22 +76,6 @@ body {
 .btn-primary:focus {
   border: black 1px solid;
 }
-
-/*#startScreen {
-  z-index: 2;
-}*/
-
-/*#startScreenContainer {
-  z-index: 3;
-}*/
-
-/*#gameOverScreen {
-  z-index: 4;
-}*/
-
-/*#gameOverScreenContainer {
-  z-index: 5;
-}*/
 
 .form-control:focus {
   border: 2px solid white;

@@ -1,46 +1,71 @@
-// main.js
 import * as THREE from "https://cdn.skypack.dev/three@0.133.1";
-import * as menuButtons from "../../baseGameComponents/menuButtons.js";
-import { windowResize } from "../../baseGameComponents/windowResize.js";
-import {
-  initUI,
-  showStartScreen,
-  showGameOverScreen,
-} from "../../baseGameComponents/gameUI.js";
-import { resetGameState } from "../../baseGameComponents/resetGame.js";
-import { endGame, startGame } from "../../baseGameComponents/gameLogic.js";
-
-//import { startGame, endGame } from "../../baseGameComponents/gameLogic.js";
-
 //import { OrbitControls } from "https://cdn.skypack.dev/three@0.133.1/examples/jsm/controls/OrbitControls";
+import { windowResize } from "../../baseGameComponents/windowResize.js";
+import { createLights } from "./createLights.js";
+import { createGround } from "./createGround.js";
+import { createPowerups } from "./createPowerups.js";
+import { createEnemies } from "./createEnemies.js";
+import { createPlayer } from "./createPlayer.js";
+import { detectCollisions } from "./detectCollisions.js";
+import { controls } from "./controls.js";
+import {
+  initialGameStart,
+  showGameOver,
+  showGameUI,
+  showMainMenu,
+  showPauseMenu,
+  hidePauseMenu,
+} from "../../baseGameComponents/gameMenus.js";
 
 document.body.style.overflow = "hidden";
-document.getElementById("gameTitle").innerText = "Block Dodger";
-
+const resumeBtn = pauseScreenContainer.querySelector("#resumeBtn");
+const playBtn = startScreenContainer.querySelector("#playBtn");
+const playAgainBtn = gameOverScreenContainer.querySelector("#playAgainBtn");
+const mainMenuBtn = gameOverScreenContainer.querySelector(".mainMenuBtn");
 const clock = new THREE.Clock();
-let points = 0;
-let enemies = [];
-let powerups = [];
-let speed = 0.05;
-let totalObjects = 7;
-const pointsUI = document.querySelector("#ui");
-const score = document.querySelector("#points");
-let camera, scene, renderer, player, playerBox;
+let speed = 5;
+let totalObjects = 10;
+let playerData;
+let paused = false;
+let gameName = "Block Dodger";
 
-// Initialize UI elements and base scene
-initUI();
-//initScene();
+//Initialise controls
+const keys = controls();
 
-// Initial game state
-let gameStart = true;
-let gameOver = false;
+let camera, scene, renderer;
 
-//Show start menu first
-if (gameStart) {
-  showStartScreen();
+let gameState = {
+  points: 0,
+  gameOver: false,
+  gameRunning: false,
+  gameStart: true,
+  enemies: [],
+  powerups: [],
+};
+
+//initial start menu
+if (gameState.gameStart) {
+  initialGameStart(gameName);
 }
 
-export const initScene = () => {
+// Generate a random whole number
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+//toggle pause menu
+window.addEventListener("keydown", (e) => {
+  if (e.key === "p" || e.key === "P") {
+    paused = !paused;
+    if (paused) {
+      showPauseMenu();
+    } else {
+      hidePauseMenu();
+    }
+  }
+});
+
+function init() {
   console.log("initialising scene");
   scene = new THREE.Scene();
 
@@ -59,16 +84,6 @@ export const initScene = () => {
   //set camera position
   camera.position.set(0, 1, 4);
 
-  createGround();
-
-  createPlayer();
-
-  createLights();
-
-  createPowerups();
-
-  createEnemies();
-
   //Renderer creation
   renderer = new THREE.WebGLRenderer({
     alpha: true,
@@ -76,126 +91,19 @@ export const initScene = () => {
     canvas: document.getElementById("gameCanvas"),
   });
 
-  //Function to resize window automatically
   windowResize(renderer, camera, scene);
 
-  //render initial scene
-  render();
+  createGround(THREE, scene);
 
-  return;
-};
+  playerData = createPlayer(THREE, scene);
 
-// Generate a random whole number
-function randomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+  createLights(THREE, scene);
 
-// create player
-function createPlayer() {
-  player = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshPhongMaterial({
-      color: "yellow",
-      shininess: 100,
-    })
-  );
-  playerBox = new THREE.Box3().setFromObject(player);
-  scene.add(player);
-  console.log("Added player");
-}
+  createPowerups(THREE, scene, gameState.powerups, totalObjects, randomNumber);
 
-//Add lights
-function createLights() {
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-  directionalLight.position.set(10, 20, 0);
-  scene.add(ambientLight, directionalLight);
-  console.log("Added lights");
-}
+  createEnemies(THREE, scene, gameState.enemies, totalObjects, randomNumber);
 
-// Add Ground
-function createGround() {
-  const ground = new THREE.Mesh(
-    new THREE.BoxGeometry(30, 1, 30),
-    new THREE.MeshPhongMaterial({
-      color: "brown",
-      shininess: 100,
-    })
-  );
-  ground.position.y = -1;
-  scene.add(ground);
-  console.log("Added ground");
-}
-
-//create powerups
-function createPowerups() {
-  for (let i = 0; i < totalObjects; i++) {
-    const powerup = new THREE.Mesh(
-      new THREE.BoxGeometry(0.5, 0.5, 0.5),
-      //new THREE.MeshBasicMaterial({ color: "blue" })
-      new THREE.MeshPhongMaterial({
-        color: "blue",
-        shininess: 100,
-      })
-    );
-    powerup.name = "powerup" + i + 1;
-    const posX = randomNumber(-5, 5);
-    const posZ = randomNumber(-35, -10);
-    powerup.position.set(posX, 0, posZ);
-    scene.add(powerup);
-    powerups.push(powerup);
-  }
-  console.log("Added powerups");
-}
-
-// create enemies
-function createEnemies() {
-  for (let i = 0; i < totalObjects; i++) {
-    const enemy = new THREE.Mesh(
-      new THREE.BoxGeometry(1, 1, 1),
-      new THREE.MeshPhongMaterial({
-        color: "red",
-        shininess: 100,
-      })
-    );
-    enemy.name = "enemy" + i + 1;
-    const posX = randomNumber(-85, 5);
-    const posZ = randomNumber(-35, -20);
-    enemy.position.set(posX, 0, posZ);
-    scene.add(enemy);
-    enemies.push(enemy);
-  }
-  console.log("Added enemies");
-}
-
-function detectCollisions() {
-  // Update player's box
-  playerBox.setFromObject(player);
-
-  // Check collisions with enemies
-  for (let i = 0; i < enemies.length; i++) {
-    const enemyBox = new THREE.Box3().setFromObject(enemies[i]);
-    // An object was hit
-    if (enemyBox.intersectsBox(playerBox)) {
-      endGame(gameOver, enemies, player, powerups, camera, scene);
-      console.log("Object hit, game over");
-      return;
-    }
-  }
-
-  // Check collisions with powerups
-  for (let i = 0; i < powerups.length; i++) {
-    const powerupBox = new THREE.Box3().setFromObject(powerups[i]);
-    if (powerupBox.intersectsBox(playerBox)) {
-      // Remove the powerup from the scene
-      scene.remove(powerups[i]);
-      // Remove it from the array
-      powerups.splice(i, 1);
-      // Update points
-      points += 1;
-      score.textContent = points.toString();
-    }
-  }
+  renderer.render(scene, camera);
 }
 
 // Move obstacles toward player
@@ -209,54 +117,87 @@ function moveObstacles(arr, power, maxX, minX, maxZ, minZ, deltaTime) {
   });
 }
 
-function updatePlayerPos(deltaTime) {
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "d" || e.key === "ArrowRight") {
-      if (player.position.x < 5) {
-        //if (player.position.x < window.innerWidth / 2) {
-        player.position.x += deltaTime * speed;
-      }
+function animate() {
+  const deltaTime = clock.getDelta();
+  if (gameState.gameOver) {
+    gameOver();
+  } else if (paused) {
+    // If the game is paused, do not update the game state
+    gameState.gameRunning = false;
+    moveObstacles(gameState.powerups, 0, -8, 8, -30, -25, deltaTime);
+    moveObstacles(gameState.enemies, 0, -8, 8, -30, -25, deltaTime);
+  } else {
+    gameState.gameRunning = true;
+
+    if (keys.right && playerData.player.position.x < 5) {
+      playerData.player.position.x += deltaTime * speed;
     }
-    if (e.key === "a" || e.key === "ArrowLeft") {
-      if (player.position.x > -5) {
-        //if (player.position.x > -(window.innerWidth / 2)) {
-        player.position.x -= deltaTime * speed;
-      }
+    if (keys.left && playerData.player.position.x > -5) {
+      playerData.player.position.x -= deltaTime * speed;
     }
-    if (e.key === "r") {
-      player.position.set(0, 0, 0); // Reset player position
+    if (keys.reset) {
+      playerData.player.position.set(0, 0, 0); // Reset player pos
+      keys.reset = false;
     }
-  });
+
+    showGameUI(gameState);
+    moveObstacles(gameState.powerups, 2, -8, 8, -30, -25, deltaTime);
+    moveObstacles(gameState.enemies, 4, -8, 8, -30, -25, deltaTime);
+
+    detectCollisions(playerData, THREE, scene, gameState);
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(animate);
 }
 
-if (gameOver) {
-  enemies.forEach((el) => {
-    scene.remove(el);
-  });
+playAgainBtn.addEventListener("click", () => {
+  resetGameState();
+});
 
-  powerups.forEach((el) => {
-    scene.remove(el);
-  });
+resumeBtn.addEventListener("click", () => {
+  paused = false;
+  gameState.gameRunning = true;
+  hidePauseMenu();
+});
 
-  if (player.position.z > camera.position.z) {
-    scene.remove(player);
+mainMenuBtn.addEventListener("click", () => {
+  showMainMenu();
+});
+
+playBtn.addEventListener("click", () => {
+  resetGameState();
+});
+
+function gameOver() {
+  gameState.gameRunning = false;
+  showGameOver(gameState);
+
+  if (gameState.enemies.length > 0) {
+    gameState.enemies.forEach((el) => {
+      scene.remove(el);
+    });
+  }
+
+  if (gameState.powerups.length > 0) {
+    gameState.powerups.forEach((el) => {
+      scene.remove(el);
+    });
+  }
+
+  if (playerData.player.position.z > camera.position.z) {
+    scene.remove(playerData.player);
   }
 }
 
-export const animate = () => {
-  const deltaTime = clock.getDelta();
-  updatePlayerPos(deltaTime);
-  moveObstacles(powerups, 2, -8, 8, -30, -25, deltaTime);
-  moveObstacles(enemies, 4, -8, 8, -30, -25, deltaTime);
-  detectCollisions();
-  requestAnimationFrame(animate);
-  render();
-};
-
-function render() {
-  renderer.render(scene, camera);
+// Function to reset game state
+function resetGameState() {
+  gameState.points = 0;
+  gameState.gameStart = false;
+  gameState.gameRunning = true;
+  gameState.gameOver = false;
+  gameState.enemies = [];
+  gameState.powerups = [];
+  init();
+  animate();
+  console.log("game reset");
 }
-
-menuButtons.handlePlayButton(resetGameState, startGame, gameOver);
-menuButtons.handlePlayAgainButton(resetGameState, startGame, gameOver);
-menuButtons.handleMainMenuButton(showStartScreen);
