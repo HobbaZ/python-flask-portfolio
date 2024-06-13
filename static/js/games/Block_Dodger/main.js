@@ -13,20 +13,21 @@ import {
   showGameOver,
   showGameUI,
   showMainMenu,
-  showPauseMenu,
   hidePauseMenu,
+  pause,
+  resetGameState,
 } from "../../baseGameComponents/gameMenus.js";
 
 document.body.style.overflow = "hidden";
 const resumeBtn = pauseScreenContainer.querySelector("#resumeBtn");
 const playBtn = startScreenContainer.querySelector("#playBtn");
 const playAgainBtn = gameOverScreenContainer.querySelector("#playAgainBtn");
-const mainMenuBtn = gameOverScreenContainer.querySelector(".mainMenuBtn");
+const mainMenuBtn = gameOverScreenContainer.querySelector(".mainMenuBtn2");
+const mainMenuBtn2 = pauseScreenContainer.querySelector(".mainMenuBtn2");
 const clock = new THREE.Clock();
 let speed = 5;
 let totalObjects = 10;
 let playerData;
-let paused = false;
 let gameName = "Block Dodger";
 
 //Initialise controls
@@ -41,6 +42,7 @@ let gameState = {
   gameStart: true,
   enemies: [],
   powerups: [],
+  paused: false,
 };
 
 //initial start menu
@@ -53,17 +55,7 @@ function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-//toggle pause menu
-window.addEventListener("keydown", (e) => {
-  if (e.key === "p" || e.key === "P") {
-    paused = !paused;
-    if (paused) {
-      showPauseMenu();
-    } else {
-      hidePauseMenu();
-    }
-  }
-});
+pause(gameState);
 
 function init() {
   console.log("initialising scene");
@@ -121,7 +113,7 @@ function animate() {
   const deltaTime = clock.getDelta();
   if (gameState.gameOver) {
     gameOver();
-  } else if (paused) {
+  } else if (gameState.paused) {
     // If the game is paused, do not update the game state
     gameState.gameRunning = false;
     moveObstacles(gameState.powerups, 0, -8, 8, -30, -25, deltaTime);
@@ -129,10 +121,16 @@ function animate() {
   } else {
     gameState.gameRunning = true;
 
-    if (keys.right && playerData.player.position.x < 5) {
+    if (
+      keys.right &&
+      playerData.player.position.x < (window.innerWidth * 0.005) / 2
+    ) {
       playerData.player.position.x += deltaTime * speed;
     }
-    if (keys.left && playerData.player.position.x > -5) {
+    if (
+      keys.left &&
+      playerData.player.position.x > -((window.innerWidth * 0.005) / 2)
+    ) {
       playerData.player.position.x -= deltaTime * speed;
     }
     if (keys.reset) {
@@ -150,22 +148,33 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+console.log((window.innerWidth * 0.005) / 2);
+
 playAgainBtn.addEventListener("click", () => {
-  resetGameState();
+  resetGameState(gameState, init, animate);
 });
 
 resumeBtn.addEventListener("click", () => {
-  paused = false;
+  gameState.paused = false;
   gameState.gameRunning = true;
   hidePauseMenu();
 });
 
 mainMenuBtn.addEventListener("click", () => {
+  gameState.gameRunning = false;
+  gameState.gameStart = true;
+  gameState.paused = false;
+  showMainMenu();
+});
+
+mainMenuBtn2.addEventListener("click", () => {
+  gameState.gameRunning = false;
+  gameState.gameStart = true;
   showMainMenu();
 });
 
 playBtn.addEventListener("click", () => {
-  resetGameState();
+  resetGameState(gameState, init, animate);
 });
 
 function gameOver() {
@@ -187,17 +196,4 @@ function gameOver() {
   if (playerData.player.position.z > camera.position.z) {
     scene.remove(playerData.player);
   }
-}
-
-// Function to reset game state
-function resetGameState() {
-  gameState.points = 0;
-  gameState.gameStart = false;
-  gameState.gameRunning = true;
-  gameState.gameOver = false;
-  gameState.enemies = [];
-  gameState.powerups = [];
-  init();
-  animate();
-  console.log("game reset");
 }
