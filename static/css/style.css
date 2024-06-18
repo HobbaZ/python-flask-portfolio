@@ -126,6 +126,13 @@ h6 {
   padding: 5px;
 }
 
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+}
+
 .servicesText.card {
   background-color: transparent;
   height: 280px;
