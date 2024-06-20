@@ -60,6 +60,10 @@ export const showGameUI = (gameState) => {
 };
 
 export const showGameOver = (gameState) => {
+  /*if (gameState.gameOverShown) {
+    return;
+  }*/
+  //gameState.gameOverShown = true;
   pointsUI.style.display = "none";
   gameOverScreenContainer.style = "display:block; z-index:1;";
   startScreenContainer.style = "display:none; z-index:2;";
@@ -75,10 +79,11 @@ export const resetGameState = (gameState, init, animate) => {
   gameState.gameStart = false;
   gameState.gameRunning = true;
   gameState.gameOver = false;
+  gameState.gameOverShown = false;
   gameState.enemies = [];
   gameState.powerups = [];
-  (gameState.paused = false),
-    (startScreenContainer.style = "display:none; z-index:1;");
+  gameState.paused = false;
+  startScreenContainer.style = "display:none; z-index:1;";
   gameOverScreenContainer.style = "display:none; z-index:2;";
   pauseScreenContainer.style = "display:none; z-index:3;";
   init();

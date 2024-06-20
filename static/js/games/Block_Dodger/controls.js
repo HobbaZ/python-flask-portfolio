@@ -27,6 +27,9 @@ export const controls = () => {
     if (e.key === "r" || e.key === "R") {
       keys.reset = false;
     }
+    if (e.key === "Escape") {
+      window.location.href = "/games";
+    }
   });
 
   return keys;

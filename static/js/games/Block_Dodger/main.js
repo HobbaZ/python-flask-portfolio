@@ -38,6 +38,7 @@ let camera, scene, renderer;
 let gameState = {
   points: 0,
   gameOver: false,
+  gameOverShown: false,
   gameRunning: false,
   gameStart: true,
   enemies: [],
@@ -112,7 +113,11 @@ function moveObstacles(arr, power, maxX, minX, maxZ, minZ, deltaTime) {
 function animate() {
   const deltaTime = clock.getDelta();
   if (gameState.gameOver) {
-    gameOver();
+    if (!gameState.gameOverShown) {
+      showGameOver(gameState); // Call this only once
+      console.log("game ended");
+    }
+    return;
   } else if (gameState.paused) {
     // If the game is paused, do not update the game state
     gameState.gameRunning = false;
@@ -148,6 +153,10 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+if (gameState.gameOverShown) {
+  gameOver();
+}
+
 console.log((window.innerWidth * 0.005) / 2);
 
 playAgainBtn.addEventListener("click", () => {
@@ -163,7 +172,6 @@ resumeBtn.addEventListener("click", () => {
 mainMenuBtn.addEventListener("click", () => {
   gameState.gameRunning = false;
   gameState.gameStart = true;
-  gameState.paused = false;
   showMainMenu();
 });
 

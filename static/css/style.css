@@ -1,5 +1,11 @@
+:root {
+  --light: white;
+  --dark: black;
+  --hover: #ffe600;
+}
+
 body {
-  background-image: linear-gradient(rgb(5, 7, 27), black);
+  background-image: linear-gradient(rgb(5, 7, 27), var(--dark));
   width: 100%;
   min-height: 100vh;
 }
@@ -10,7 +16,7 @@ body {
 
 .card:hover .servicesIcon,
 .card:hover .card-title {
-  color: #008000;
+  color: var(--hover);
 }
 
 .card:hover .card-title {
@@ -41,7 +47,7 @@ body {
   width: 100%;
   background-color: transparent;
   opacity: 1;
-  color: white;
+  color: var(--light);
   text-align: center;
 }
 
@@ -55,12 +61,12 @@ body {
   padding: 20px;
 }
 
-.btnPrimary {
+.btn-primary {
   background-color: transparent;
   padding: 10px;
   display: block;
-  color: white;
-  border: white 1px solid;
+  color: var(--light);
+  border: var(--light) 1px solid;
   border-radius: 5px;
   width: 50%;
   margin: auto;
@@ -68,17 +74,17 @@ body {
   text-decoration: none;
 }
 
-.btnPrimary:hover {
-  color: orangered;
-  border: orangered 1px solid;
+.btn-primary:hover {
+  color: var(--hover);
+  border: var(--hover) 1px solid;
 }
 
 .btn-primary:focus {
-  border: black 1px solid;
+  border: var(--dark) 1px solid;
 }
 
 .form-control:focus {
-  border: 2px solid white;
+  border: 2px solid var(--light);
 }
 
 #gameCanvas {
@@ -86,12 +92,12 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: linear-gradient(rgb(5, 7, 27), black);
+  background: linear-gradient(rgb(5, 7, 27), var(--dark));
 }
 
 #homeTitle {
   font-size: 50px;
-  color: white;
+  color: var(--light);
 }
 
 #homeTitle,
@@ -114,7 +120,7 @@ label,
 p,
 li,
 hr {
-  color: white;
+  color: var(--light);
 }
 
 h6 {
@@ -124,6 +130,16 @@ h6 {
 .icons {
   font-size: 30px;
   padding: 5px;
+}
+
+.keyDisplay {
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid var(--light);
+  border-radius: 5px;
+  box-shadow: 3px 3px var(--light);
 }
 
 nav {
@@ -137,18 +153,19 @@ nav {
   background-color: transparent;
   height: 280px;
   cursor: pointer;
-  border: 1px solid white;
-  color: white;
+  border: 1px solid var(--light);
+  color: var(--light);
 }
 
 .servicesIcon {
   font-size: 36px;
   text-align: center;
   width: 100%;
+  color: var(--hover);
 }
 
 .servicesText:hover {
-  border: 1px solid #008000;
+  border: 1px solid var(--hover);
 }
 
 #ui {
@@ -156,5 +173,5 @@ nav {
   position: absolute;
   top: 60px;
   left: 30px;
-  color: white;
+  color: var(--light);
 }

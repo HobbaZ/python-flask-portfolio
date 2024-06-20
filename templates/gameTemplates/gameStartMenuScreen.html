@@ -1,7 +1,22 @@
 <div id="menuScreen" class="d-flex justify-content-center align-items-center">
-    <div id="startScreenContainer" class="col-xs-12 col-sm-6">
+    <div id="startScreenContainer" class="col-xs-12 col-md-6">
         <h1 id="gameTitle"></h1>
-        <div>Use the left and right arrow keys to move</div>
-        <button type="button" class="btnPrimary col-xs-12 col-sm-6" id="playBtn">Play</button>
-        <a href="{{ url_for('games')}}" class="btnPrimary col-xs-12 col-sm-6" role="button">Back to Games</a>
+        <div>
+
+            <div class="col-sm-12 col-md-6 m-auto">
+                <hr>
+                <h3 class="text-center">Controls</h3>
+
+                <div class="text-start">
+                    <p><span class="keyDisplay">&#x2190;</span> or <span class="keyDisplay">A</span> keys to move Left
+                    </p>
+                    <p><span class="keyDisplay">&#x2192;</span> or <span class="keyDisplay">D</span> keys to move Right
+                    </p>
+                    <p><span class="keyDisplay">P</span> to pause the game</p>
+                    <p><span class="keyDisplay">ESC</span> to quit</p>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn-primary col-xs-12 col-sm-6" id="playBtn">Play</button>
+        <a href="{{ url_for('games')}}" class="btn-primary col-xs-12 col-sm-6" role="button">Back to Games</a>
     </div>
