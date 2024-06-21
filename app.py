@@ -10,6 +10,10 @@ def index():
 def games():
     return render_template('games.html')
 
-@app.route('/gamesBase')
-def gamesBase():
-    return render_template('gamesBase.html')
+@app.route('/block_dodger')
+def blockDodger():
+    return render_template('/gameTemplates/blockDodger.html')
+
+@app.route('/car_drive')
+def carDrive():
+    return render_template('/gameTemplates/carDrive.html')

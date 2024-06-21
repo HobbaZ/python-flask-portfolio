@@ -29,15 +29,23 @@ window.onload = function () {
   let speed = 5;
   let totalObjects = 10;
   let playerData;
-  let gameName = "Block Dodger";
+  let gameName = "Car Drive";
   let gameControls = `
   <div class="text-start">
-  <p><span class="keyDisplay">&#x2190;</span> or <span class="keyDisplay">A</span> keys to move Left
+  <p>Accelerate: <span class="keyDisplay">&#x2191;</span> or <span class="keyDisplay">W</span>
   </p>
-  <p><span class="keyDisplay">&#x2192;</span> or <span class="keyDisplay">D</span> keys to move Right
+
+  <p>Brake/Reverse: <span class="keyDisplay">&#x2193;</span> or <span class="keyDisplay">S</span>
   </p>
-  <p><span class="keyDisplay">P</span> to pause the game</p>
-  <p><span class="keyDisplay">ESC</span> to quit</p>
+
+  <p>Turn Left: <span class="keyDisplay">&#x2190;</span> or <span class="keyDisplay">A</span>
+  </p>
+
+  <p>Turn Right: <span class="keyDisplay">&#x2192;</span> or <span class="keyDisplay">D</span>
+  </p>
+
+  <p>Pause: <span class="keyDisplay">P</span></p>
+  <p>Quit: <span class="keyDisplay">ESC</span></p>
 </div>`;
 
   //Initialise controls

@@ -4,24 +4,46 @@
 
 <h1 class="text-white">{% block title %} Games {% endblock %}</h1>
 <div class="row">
-    <div class="col-lg-4 mt-4">
+    <div class="col-md-6 col-lg-4 mt-4">
         <div class="card servicesText">
             <img class="card-img-top" src="..." alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title mt-3">{% block gameTitle %} Block Dodger {% endblock %}</h5>
                 <p class="card-text mt-3 text-center">Dodge the blocks to get the highest score</p>
-                <a href="{{ url_for('gamesBase')}}" class="text-center btn-primary" role="button">Play</a>
+                <a href="{{ url_for('blockDodger')}}" class="text-center btn-primary" role="button">Play</a>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-4 mt-4">
+    <div class="col-md-6 col-lg-4 mt-4">
         <div class="card servicesText">
             <img class="card-img-top" src="..." alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title mt-3">Car Drive</h5>
                 <p class="card-text mt-3 text-center">Drive a car around a landscape</p>
-                <a href="{{ url_for('gamesBase')}}" class="text-center btn-primary" role="button">Play</a>
+                <a href="{{ url_for('carDrive')}}" class=" text-center btn-primary" role="button">Play</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4 mt-4">
+        <div class="card servicesText">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title mt-3">Car Drive</h5>
+                <p class="card-text mt-3 text-center">Drive a car around a landscape</p>
+                <a href="" class="text-center btn-primary" role="button">Play</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4 mt-4">
+        <div class="card servicesText">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title mt-3">Car Drive</h5>
+                <p class="card-text mt-3 text-center">Drive a car around a landscape</p>
+                <a href="" class="text-center btn-primary" role="button">Play</a>
             </div>
         </div>
     </div>

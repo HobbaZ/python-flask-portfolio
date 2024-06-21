@@ -1,5 +1,6 @@
 const pointsUI = document.querySelector("#ui");
 const gameTitle = document.querySelector("#gameTitle");
+const gameControlsDiv = document.querySelector("#gameControlsDiv");
 const pauseScreenContainer = document.querySelector("#pauseScreenContainer");
 const startScreenContainer = document.querySelector("#startScreenContainer");
 const gameOverScreenContainer = document.querySelector(
@@ -8,8 +9,9 @@ const gameOverScreenContainer = document.querySelector(
 const gameOverMessage =
   gameOverScreenContainer.querySelector("#gameOverMessage");
 
-export const initialGameStart = (gameName) => {
+export const initialGameStart = (gameName, gameControls) => {
   gameTitle.textContent = gameName;
+  gameControlsDiv.innerHTML = gameControls;
   startScreenContainer.style = "display:block; z-index:1;";
   gameOverScreenContainer.style = "display:none; z-index:2;";
   pauseScreenContainer.style = "display:none; z-index:3;";
@@ -60,10 +62,6 @@ export const showGameUI = (gameState) => {
 };
 
 export const showGameOver = (gameState) => {
-  /*if (gameState.gameOverShown) {
-    return;
-  }*/
-  //gameState.gameOverShown = true;
   pointsUI.style.display = "none";
   gameOverScreenContainer.style = "display:block; z-index:1;";
   startScreenContainer.style = "display:none; z-index:2;";
